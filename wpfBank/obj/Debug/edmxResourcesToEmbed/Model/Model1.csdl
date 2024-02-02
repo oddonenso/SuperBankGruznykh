@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SuperPuperBankModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BankAccount">
+    <Key>
+      <PropertyRef Name="NumberAccount" />
+    </Key>
+    <Property Name="NumberAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="DateOpen" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Balance" Type="Double" Nullable="false" />
+    <Property Name="TypeID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Type" Relationship="Self.FK__BankAccou__TypeI__5AEE82B9" FromRole="BankAccount" ToRole="Type" />
+    <NavigationProperty Name="User" Relationship="Self.FK__BankAccou__UserI__59FA5E80" FromRole="BankAccount" ToRole="User" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__Number__60A75C0F" FromRole="BankAccount" ToRole="Contract" />
+    <NavigationProperty Name="History" Relationship="Self.FK__History__Account__5DCAEF64" FromRole="BankAccount" ToRole="History" />
+  </EntityType>
+  <EntityType Name="Contract">
+    <Key>
+      <PropertyRef Name="IDContract" />
+    </Key>
+    <Property Name="IDContract" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NumberAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="Amount" Type="Double" Nullable="false" />
+    <Property Name="Period" Type="Int32" Nullable="false" />
+    <Property Name="ExpirationDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Percet" Type="Double" />
+    <NavigationProperty Name="BankAccount" Relationship="Self.FK__Contract__Number__60A75C0F" FromRole="Contract" ToRole="BankAccount" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Contract__UserID__619B8048" FromRole="Contract" ToRole="User" />
+  </EntityType>
+  <EntityType Name="History">
+    <Key>
+      <PropertyRef Name="IDOperation" />
+    </Key>
+    <Property Name="IDOperation" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NameOperation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Amount" Type="Double" Nullable="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="BankAccount" Relationship="Self.FK__History__Account__5DCAEF64" FromRole="History" ToRole="BankAccount" />
+  </EntityType>
+  <EntityType Name="Type">
+    <Key>
+      <PropertyRef Name="IDType" />
+    </Key>
+    <Property Name="IDType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NameType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="BankAccount" Relationship="Self.FK__BankAccou__TypeI__5AEE82B9" FromRole="Type" ToRole="BankAccount" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="IDUser" />
+    </Key>
+    <Property Name="IDUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Series" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Adress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EMail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateOfIssue" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Issued" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="PlaceOfBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="BankAccount" Relationship="Self.FK__BankAccou__UserI__59FA5E80" FromRole="User" ToRole="BankAccount" />
+    <NavigationProperty Name="Contract" Relationship="Self.FK__Contract__UserID__619B8048" FromRole="User" ToRole="Contract" />
+  </EntityType>
+  <Association Name="FK__BankAccou__TypeI__5AEE82B9">
+    <End Role="Type" Type="Self.Type" Multiplicity="1" />
+    <End Role="BankAccount" Type="Self.BankAccount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Type">
+        <PropertyRef Name="IDType" />
+      </Principal>
+      <Dependent Role="BankAccount">
+        <PropertyRef Name="TypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__BankAccou__UserI__59FA5E80">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="BankAccount" Type="Self.BankAccount" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="IDUser" />
+      </Principal>
+      <Dependent Role="BankAccount">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__Number__60A75C0F">
+    <End Role="BankAccount" Type="Self.BankAccount" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BankAccount">
+        <PropertyRef Name="NumberAccount" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="NumberAccount" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__History__Account__5DCAEF64">
+    <End Role="BankAccount" Type="Self.BankAccount" Multiplicity="1" />
+    <End Role="History" Type="Self.History" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BankAccount">
+        <PropertyRef Name="NumberAccount" />
+      </Principal>
+      <Dependent Role="History">
+        <PropertyRef Name="Account" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Contract__UserID__619B8048">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Contract" Type="Self.Contract" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="IDUser" />
+      </Principal>
+      <Dependent Role="Contract">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SuperPuperBankEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BankAccount" EntityType="Self.BankAccount" />
+    <EntitySet Name="Contract" EntityType="Self.Contract" />
+    <EntitySet Name="History" EntityType="Self.History" />
+    <EntitySet Name="Type" EntityType="Self.Type" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <AssociationSet Name="FK__BankAccou__TypeI__5AEE82B9" Association="Self.FK__BankAccou__TypeI__5AEE82B9">
+      <End Role="Type" EntitySet="Type" />
+      <End Role="BankAccount" EntitySet="BankAccount" />
+    </AssociationSet>
+    <AssociationSet Name="FK__BankAccou__UserI__59FA5E80" Association="Self.FK__BankAccou__UserI__59FA5E80">
+      <End Role="User" EntitySet="User" />
+      <End Role="BankAccount" EntitySet="BankAccount" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__Number__60A75C0F" Association="Self.FK__Contract__Number__60A75C0F">
+      <End Role="BankAccount" EntitySet="BankAccount" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+    <AssociationSet Name="FK__History__Account__5DCAEF64" Association="Self.FK__History__Account__5DCAEF64">
+      <End Role="BankAccount" EntitySet="BankAccount" />
+      <End Role="History" EntitySet="History" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Contract__UserID__619B8048" Association="Self.FK__Contract__UserID__619B8048">
+      <End Role="User" EntitySet="User" />
+      <End Role="Contract" EntitySet="Contract" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
